@@ -1,7 +1,7 @@
 {
-  "name": "duration-formatter",
-  "version": "1.0.7",
-  "description": "",
+  "name": "duration-str",
+  "version": "1.0.0",
+  "description": "Tiny, zero-dependency utility for formatting seconds into time strings and parsing them back",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -18,15 +18,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cloudtion/duration-formatter.git"
+    "url": "git+https://github.com/cloudtion/duration-str.git"
   },
-  "keywords": [],
+  "keywords": [
+    "duration",
+    "time",
+    "format",
+    "parse",
+    "seconds",
+    "typescript"
+  ],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cloudtion/duration-formatter/issues"
+    "url": "https://github.com/cloudtion/duration-str/issues"
   },
-  "homepage": "https://github.com/cloudtion/duration-formatter#readme",
+  "homepage": "https://github.com/cloudtion/duration-str#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/jest": "^30.0.0",

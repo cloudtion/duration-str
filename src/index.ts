@@ -70,7 +70,10 @@ function validateSecondsFromTimeOptions(options: unknown): void {
     }
 }
 
-export function timeFromSeconds(input_seconds: unknown, options: unknown = {}): string {
+export function timeFromSeconds(
+    input_seconds: number | string,
+    options: TimeFromSecondsOptions = {}
+): string {
     if (input_seconds === undefined || input_seconds === null) {
         throw new TypeError('input_seconds is required');
     }
@@ -81,7 +84,7 @@ export function timeFromSeconds(input_seconds: unknown, options: unknown = {}): 
 
     validateTimeFromSecondsOptions(options);
 
-    let seconds = parseFloat(input_seconds as string);
+    let seconds = parseFloat(String(input_seconds));
 
     if (isNaN(seconds)) {
         throw new TypeError('input_seconds must be a valid number');
@@ -93,7 +96,6 @@ export function timeFromSeconds(input_seconds: unknown, options: unknown = {}): 
         seconds *= -1;
     }
 
-    const validatedOptions = (options ?? {}) as TimeFromSecondsOptions;
     const options_sum: Required<TimeFromSecondsOptions> = {
         hours_padding: 2,
         minutes_padding: 2,
@@ -101,7 +103,7 @@ export function timeFromSeconds(input_seconds: unknown, options: unknown = {}): 
         seconds_decimal_places: 0,
         decimal_symbol: '.',
         output_template: (hours, minutes, secs) => `${hours}:${minutes}:${secs}`,
-        ...validatedOptions,
+        ...options,
     };
 
     const decimal_mult =
@@ -144,7 +146,7 @@ export function timeFromSeconds(input_seconds: unknown, options: unknown = {}): 
     );
 }
 
-export function secondsFromTime(input_time: unknown, options: unknown = {}): number {
+export function secondsFromTime(input_time: string, options: SecondsFromTimeOptions = {}): number {
     if (input_time === undefined || input_time === null) {
         throw new TypeError('input_time is required');
     }
@@ -155,14 +157,13 @@ export function secondsFromTime(input_time: unknown, options: unknown = {}): num
 
     validateSecondsFromTimeOptions(options);
 
-    const validatedOptions = (options ?? {}) as SecondsFromTimeOptions;
     const options_sum: Required<SecondsFromTimeOptions> = {
         decimal_symbol: '.',
         template_string: '{H}:{M}:{S}',
-        ...validatedOptions,
+        ...options,
     };
 
-    const template = validatedOptions.template_string ?? options_sum.template_string;
+    const template = options.template_string ?? options_sum.template_string;
 
     const positions = {
         h: template.indexOf('{H}'),

@@ -6,40 +6,43 @@ function validateTimeFromSecondsOptions(options) {
     if (options !== undefined && options !== null && typeof options !== 'object') {
         throw new TypeError('options must be an object');
     }
-    if (options && typeof options === 'object') {
-        const opts = options;
-        if (opts.hours_padding !== undefined && typeof opts.hours_padding !== 'number') {
-            throw new TypeError('options.hours_padding must be a number');
-        }
-        if (opts.minutes_padding !== undefined && typeof opts.minutes_padding !== 'number') {
-            throw new TypeError('options.minutes_padding must be a number');
-        }
-        if (opts.seconds_padding !== undefined && typeof opts.seconds_padding !== 'number') {
-            throw new TypeError('options.seconds_padding must be a number');
-        }
-        if (opts.seconds_decimal_places !== undefined && typeof opts.seconds_decimal_places !== 'number') {
-            throw new TypeError('options.seconds_decimal_places must be a number');
-        }
-        if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
-            throw new TypeError('options.decimal_symbol must be a string');
-        }
-        if (opts.output_template !== undefined && typeof opts.output_template !== 'function') {
-            throw new TypeError('options.output_template must be a function');
-        }
+    if (!options || typeof options !== 'object') {
+        return;
+    }
+    const opts = options;
+    if (opts.hours_padding !== undefined && typeof opts.hours_padding !== 'number') {
+        throw new TypeError('options.hours_padding must be a number');
+    }
+    if (opts.minutes_padding !== undefined && typeof opts.minutes_padding !== 'number') {
+        throw new TypeError('options.minutes_padding must be a number');
+    }
+    if (opts.seconds_padding !== undefined && typeof opts.seconds_padding !== 'number') {
+        throw new TypeError('options.seconds_padding must be a number');
+    }
+    if (opts.seconds_decimal_places !== undefined &&
+        typeof opts.seconds_decimal_places !== 'number') {
+        throw new TypeError('options.seconds_decimal_places must be a number');
+    }
+    if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
+        throw new TypeError('options.decimal_symbol must be a string');
+    }
+    if (opts.output_template !== undefined && typeof opts.output_template !== 'function') {
+        throw new TypeError('options.output_template must be a function');
     }
 }
 function validateSecondsFromTimeOptions(options) {
     if (options !== undefined && options !== null && typeof options !== 'object') {
         throw new TypeError('options must be an object');
     }
-    if (options && typeof options === 'object') {
-        const opts = options;
-        if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
-            throw new TypeError('options.decimal_symbol must be a string');
-        }
-        if (opts.template_string !== undefined && typeof opts.template_string !== 'string') {
-            throw new TypeError('options.template_string must be a string');
-        }
+    if (!options || typeof options !== 'object') {
+        return;
+    }
+    const opts = options;
+    if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
+        throw new TypeError('options.decimal_symbol must be a string');
+    }
+    if (opts.template_string !== undefined && typeof opts.template_string !== 'string') {
+        throw new TypeError('options.template_string must be a string');
     }
 }
 function timeFromSeconds(input_seconds, options = {}) {
@@ -50,7 +53,7 @@ function timeFromSeconds(input_seconds, options = {}) {
         throw new TypeError('input_seconds must be a number or string');
     }
     validateTimeFromSecondsOptions(options);
-    let seconds = parseFloat(input_seconds);
+    let seconds = parseFloat(String(input_seconds));
     if (isNaN(seconds)) {
         throw new TypeError('input_seconds must be a valid number');
     }
@@ -58,7 +61,6 @@ function timeFromSeconds(input_seconds, options = {}) {
     if (is_negative) {
         seconds *= -1;
     }
-    const validatedOptions = (options ?? {});
     const options_sum = {
         hours_padding: 2,
         minutes_padding: 2,
@@ -66,14 +68,14 @@ function timeFromSeconds(input_seconds, options = {}) {
         seconds_decimal_places: 0,
         decimal_symbol: '.',
         output_template: (hours, minutes, secs) => `${hours}:${minutes}:${secs}`,
-        ...validatedOptions
+        ...options,
     };
     const decimal_mult = options_sum.seconds_decimal_places === 0 ? 1 : 10 ** options_sum.seconds_decimal_places;
     seconds = Math.round(seconds * decimal_mult) / decimal_mult;
     const calculated = {
         hours: '' + Math.floor(seconds / 3600),
         minutes: '' + Math.floor((seconds %= 3600) / 60),
-        seconds: '' + (Math.round((seconds % 60) * decimal_mult) / decimal_mult)
+        seconds: '' + Math.round((seconds % 60) * decimal_mult) / decimal_mult,
     };
     const dc_split = calculated.seconds.split('.');
     calculated.hours = calculated.hours.padStart(options_sum.hours_padding, '0');
@@ -87,7 +89,8 @@ function timeFromSeconds(input_seconds, options = {}) {
     else if (!calculated.seconds.includes('.') && options_sum.seconds_decimal_places > 0) {
         calculated.seconds += options_sum.decimal_symbol.padEnd(options_sum.seconds_decimal_places + 1, '0');
     }
-    return (is_negative ? '- ' : '') + options_sum.output_template(calculated.hours, calculated.minutes, calculated.seconds);
+    return ((is_negative ? '- ' : '') +
+        options_sum.output_template(calculated.hours, calculated.minutes, calculated.seconds));
 }
 function secondsFromTime(input_time, options = {}) {
     if (input_time === undefined || input_time === null) {
@@ -97,13 +100,12 @@ function secondsFromTime(input_time, options = {}) {
         throw new TypeError('input_time must be a string');
     }
     validateSecondsFromTimeOptions(options);
-    const validatedOptions = (options ?? {});
     const options_sum = {
         decimal_symbol: '.',
         template_string: '{H}:{M}:{S}',
-        ...validatedOptions
+        ...options,
     };
-    const template = validatedOptions.template_string ?? options_sum.template_string;
+    const template = options.template_string ?? options_sum.template_string;
     const positions = {
         h: template.indexOf('{H}'),
         m: template.indexOf('{M}'),
@@ -128,13 +130,11 @@ function secondsFromTime(input_time, options = {}) {
         .replace('{S}', seconds_match);
     const regex_with_negative = `^(?:-[ ]?)?${built_regex}$`;
     const match = (input_time + '').match(new RegExp(regex_with_negative));
-    if (match) {
-        const hours = order.indexOf('h') > -1 ? parseInt(match[order.indexOf('h') + 1]) : 0;
-        const minutes = order.indexOf('m') > -1 ? parseInt(match[order.indexOf('m') + 1]) : 0;
-        const seconds = order.indexOf('s') > -1 ? parseInt(match[order.indexOf('s') + 1]) : 0;
-        return ((hours * 3600) + (minutes * 60) + seconds) * (input_time.trim().startsWith('-') ? -1 : 1);
+    if (!match) {
+        throw new Error("Input time doesn't match required pattern.");
     }
-    else {
-        throw new Error('Input time doesn\'t match required pattern.');
-    }
+    const hours = order.indexOf('h') > -1 ? parseInt(match[order.indexOf('h') + 1]) : 0;
+    const minutes = order.indexOf('m') > -1 ? parseInt(match[order.indexOf('m') + 1]) : 0;
+    const seconds = order.indexOf('s') > -1 ? parseInt(match[order.indexOf('s') + 1]) : 0;
+    return (hours * 3600 + minutes * 60 + seconds) * (input_time.trim().startsWith('-') ? -1 : 1);
 }

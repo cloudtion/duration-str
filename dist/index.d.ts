@@ -10,5 +10,5 @@ export interface SecondsFromTimeOptions {
     decimal_symbol?: string;
     template_string?: string;
 }
-export declare function timeFromSeconds(input_seconds: unknown, options?: unknown): string;
-export declare function secondsFromTime(input_time: unknown, options?: unknown): number;
+export declare function timeFromSeconds(input_seconds: number | string, options?: TimeFromSecondsOptions): string;
+export declare function secondsFromTime(input_time: string, options?: SecondsFromTimeOptions): number;
