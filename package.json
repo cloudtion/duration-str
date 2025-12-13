@@ -1,20 +1,15 @@
 {
-  "name": "duration-str",
+  "name": "duration-formatter",
   "version": "1.0.0",
-  "description": "Tiny, zero-dependency utility for formatting seconds into time strings and parsing them back",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "This package has been renamed to duration-str. Please install duration-str instead.",
+  "main": "index.js",
+  "types": "index.d.ts",
   "files": [
-    "dist"
+    "index.js",
+    "index.d.ts"
   ],
-  "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write src/",
-    "format:check": "prettier --check src/",
-    "prepublishOnly": "npm run build"
+  "dependencies": {
+    "duration-str": "^1.0.0"
   },
   "repository": {
     "type": "git",
@@ -25,27 +20,12 @@
     "time",
     "format",
     "parse",
-    "seconds",
-    "typescript"
+    "seconds"
   ],
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cloudtion/duration-str/issues"
   },
-  "homepage": "https://github.com/cloudtion/duration-str#readme",
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/jest": "^30.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.49.0",
-    "@typescript-eslint/parser": "^8.49.0",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "jest": "^30.2.0",
-    "prettier": "^3.7.4",
-    "ts-jest": "^29.4.6",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0"
-  }
+  "homepage": "https://github.com/cloudtion/duration-str#readme"
 }

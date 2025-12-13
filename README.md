@@ -1,4 +1,9 @@
-# duration-str
+# duration-formatter
+
+**This package is being renamed to [`duration-str`](https://www.npmjs.com/package/duration-str).**
+Please install it instead.
+
+---
 
 ![npm version](https://img.shields.io/npm/v/duration-str)
 ![license](https://img.shields.io/npm/l/duration-str)
