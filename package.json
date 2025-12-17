@@ -1,6 +1,6 @@
 {
   "name": "duration-str",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tiny, zero-dependency utility for formatting seconds into time strings and parsing them back",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
