@@ -17,78 +17,11 @@ export interface SecondsFromTimeOptions {
     template_string?: string;
 }
 
-function validateTimeFromSecondsOptions(options: unknown): void {
-    if (options !== undefined && options !== null && typeof options !== 'object') {
-        throw new TypeError('options must be an object');
-    }
-
-    if (!options || typeof options !== 'object') {
-        return;
-    }
-
-    const opts = options as Record<string, unknown>;
-
-    if (opts.hours_padding !== undefined && typeof opts.hours_padding !== 'number') {
-        throw new TypeError('options.hours_padding must be a number');
-    }
-    if (opts.minutes_padding !== undefined && typeof opts.minutes_padding !== 'number') {
-        throw new TypeError('options.minutes_padding must be a number');
-    }
-    if (opts.seconds_padding !== undefined && typeof opts.seconds_padding !== 'number') {
-        throw new TypeError('options.seconds_padding must be a number');
-    }
-    if (
-        opts.seconds_decimal_places !== undefined &&
-        typeof opts.seconds_decimal_places !== 'number'
-    ) {
-        throw new TypeError('options.seconds_decimal_places must be a number');
-    }
-    if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
-        throw new TypeError('options.decimal_symbol must be a string');
-    }
-    if (opts.output_template !== undefined && typeof opts.output_template !== 'function') {
-        throw new TypeError('options.output_template must be a function');
-    }
-}
-
-function validateSecondsFromTimeOptions(options: unknown): void {
-    if (options !== undefined && options !== null && typeof options !== 'object') {
-        throw new TypeError('options must be an object');
-    }
-
-    if (!options || typeof options !== 'object') {
-        return;
-    }
-
-    const opts = options as Record<string, unknown>;
-
-    if (opts.decimal_symbol !== undefined && typeof opts.decimal_symbol !== 'string') {
-        throw new TypeError('options.decimal_symbol must be a string');
-    }
-    if (opts.template_string !== undefined && typeof opts.template_string !== 'string') {
-        throw new TypeError('options.template_string must be a string');
-    }
-}
-
 export function timeFromSeconds(
     input_seconds: number | string,
     options: TimeFromSecondsOptions = {}
 ): string {
-    if (input_seconds === undefined || input_seconds === null) {
-        throw new TypeError('input_seconds is required');
-    }
-
-    if (typeof input_seconds !== 'number' && typeof input_seconds !== 'string') {
-        throw new TypeError('input_seconds must be a number or string');
-    }
-
-    validateTimeFromSecondsOptions(options);
-
     let seconds = parseFloat(String(input_seconds));
-
-    if (isNaN(seconds)) {
-        throw new TypeError('input_seconds must be a valid number');
-    }
 
     const is_negative = seconds < 0;
 
@@ -147,16 +80,6 @@ export function timeFromSeconds(
 }
 
 export function secondsFromTime(input_time: string, options: SecondsFromTimeOptions = {}): number {
-    if (input_time === undefined || input_time === null) {
-        throw new TypeError('input_time is required');
-    }
-
-    if (typeof input_time !== 'string') {
-        throw new TypeError('input_time must be a string');
-    }
-
-    validateSecondsFromTimeOptions(options);
-
     const options_sum: Required<SecondsFromTimeOptions> = {
         decimal_symbol: '.',
         template_string: '{H}:{M}:{S}',

@@ -1,9 +1,4 @@
-import {
-    timeFromSeconds,
-    secondsFromTime,
-    TimeFromSecondsOptions,
-    SecondsFromTimeOptions,
-} from './index';
+import { secondsFromTime, timeFromSeconds } from './index';
 
 describe('timeFromSeconds', () => {
     describe('basic conversions', () => {
@@ -187,100 +182,6 @@ describe('timeFromSeconds', () => {
             expect(timeFromSeconds(3600000, { hours_padding: 4 })).toBe('1000:00:00');
         });
     });
-
-    describe('runtime type validation', () => {
-        test('throws TypeError when input_seconds is undefined', () => {
-            expect(() => timeFromSeconds(undefined as unknown as number)).toThrow(TypeError);
-            expect(() => timeFromSeconds(undefined as unknown as number)).toThrow(
-                'input_seconds is required'
-            );
-        });
-
-        test('throws TypeError when input_seconds is null', () => {
-            expect(() => timeFromSeconds(null as unknown as number)).toThrow(TypeError);
-            expect(() => timeFromSeconds(null as unknown as number)).toThrow(
-                'input_seconds is required'
-            );
-        });
-
-        test('throws TypeError when input_seconds is not a number or string', () => {
-            expect(() => timeFromSeconds({} as unknown as number)).toThrow(TypeError);
-            expect(() => timeFromSeconds({} as unknown as number)).toThrow(
-                'input_seconds must be a number or string'
-            );
-        });
-
-        test('throws TypeError when input_seconds is NaN string', () => {
-            expect(() => timeFromSeconds('not a number')).toThrow(TypeError);
-            expect(() => timeFromSeconds('not a number')).toThrow(
-                'input_seconds must be a valid number'
-            );
-        });
-
-        test('throws TypeError when options is not an object', () => {
-            expect(() =>
-                timeFromSeconds(100, 'invalid' as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                timeFromSeconds(100, 'invalid' as unknown as TimeFromSecondsOptions)
-            ).toThrow('options must be an object');
-        });
-
-        test('throws TypeError when hours_padding is not a number', () => {
-            expect(() =>
-                timeFromSeconds(100, { hours_padding: 'two' } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                timeFromSeconds(100, { hours_padding: 'two' } as unknown as TimeFromSecondsOptions)
-            ).toThrow('options.hours_padding must be a number');
-        });
-
-        test('throws TypeError when minutes_padding is not a number', () => {
-            expect(() =>
-                timeFromSeconds(100, {
-                    minutes_padding: 'two',
-                } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-        });
-
-        test('throws TypeError when seconds_padding is not a number', () => {
-            expect(() =>
-                timeFromSeconds(100, {
-                    seconds_padding: 'two',
-                } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-        });
-
-        test('throws TypeError when seconds_decimal_places is not a number', () => {
-            expect(() =>
-                timeFromSeconds(100, {
-                    seconds_decimal_places: 'two',
-                } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-        });
-
-        test('throws TypeError when decimal_symbol is not a string', () => {
-            expect(() =>
-                timeFromSeconds(100, { decimal_symbol: 123 } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                timeFromSeconds(100, { decimal_symbol: 123 } as unknown as TimeFromSecondsOptions)
-            ).toThrow('options.decimal_symbol must be a string');
-        });
-
-        test('throws TypeError when output_template is not a function', () => {
-            expect(() =>
-                timeFromSeconds(100, {
-                    output_template: 'template',
-                } as unknown as TimeFromSecondsOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                timeFromSeconds(100, {
-                    output_template: 'template',
-                } as unknown as TimeFromSecondsOptions)
-            ).toThrow('options.output_template must be a function');
-        });
-    });
 });
 
 describe('secondsFromTime', () => {
@@ -402,64 +303,6 @@ describe('secondsFromTime', () => {
             expect(() => secondsFromTime('01:01:01', { template_string: '{H}-{M}-{S}' })).toThrow(
                 "Input time doesn't match required pattern."
             );
-        });
-    });
-
-    describe('runtime type validation', () => {
-        test('throws TypeError when input_time is undefined', () => {
-            expect(() => secondsFromTime(undefined as unknown as string)).toThrow(TypeError);
-            expect(() => secondsFromTime(undefined as unknown as string)).toThrow(
-                'input_time is required'
-            );
-        });
-
-        test('throws TypeError when input_time is null', () => {
-            expect(() => secondsFromTime(null as unknown as string)).toThrow(TypeError);
-            expect(() => secondsFromTime(null as unknown as string)).toThrow(
-                'input_time is required'
-            );
-        });
-
-        test('throws TypeError when input_time is not a string', () => {
-            expect(() => secondsFromTime(123 as unknown as string)).toThrow(TypeError);
-            expect(() => secondsFromTime(123 as unknown as string)).toThrow(
-                'input_time must be a string'
-            );
-        });
-
-        test('throws TypeError when options is not an object', () => {
-            expect(() =>
-                secondsFromTime('00:00:00', 'invalid' as unknown as SecondsFromTimeOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                secondsFromTime('00:00:00', 'invalid' as unknown as SecondsFromTimeOptions)
-            ).toThrow('options must be an object');
-        });
-
-        test('throws TypeError when decimal_symbol is not a string', () => {
-            expect(() =>
-                secondsFromTime('00:00:00', {
-                    decimal_symbol: 123,
-                } as unknown as SecondsFromTimeOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                secondsFromTime('00:00:00', {
-                    decimal_symbol: 123,
-                } as unknown as SecondsFromTimeOptions)
-            ).toThrow('options.decimal_symbol must be a string');
-        });
-
-        test('throws TypeError when template_string is not a string', () => {
-            expect(() =>
-                secondsFromTime('00:00:00', {
-                    template_string: 123,
-                } as unknown as SecondsFromTimeOptions)
-            ).toThrow(TypeError);
-            expect(() =>
-                secondsFromTime('00:00:00', {
-                    template_string: 123,
-                } as unknown as SecondsFromTimeOptions)
-            ).toThrow('options.template_string must be a string');
         });
     });
 
